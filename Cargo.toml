@@ -1,0 +1,7 @@
+[package]
+name = "pusoy"
+version = "0.1.0"
+authors = ["EtomicBomb <ethan@ethan.ws>"]
+edition = "2018"
+
+[dependencies]
