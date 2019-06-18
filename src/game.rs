@@ -2,7 +2,6 @@ use crate::play::Play;
 
 use crate::card::{Card, THREE_OF_CLUBS};
 
-
 // MOTIVATION: if HumanPlayer or MachinePlayer had access to the regular GameState object,
 // they could call .hands and other info that would just be cheating. This struct only gives
 // access to data that isn't cheating
@@ -13,9 +12,7 @@ pub struct SafeGameInterface<'a> {
 
 impl<'a> SafeGameInterface<'a> {
     pub fn from_game(game: &GameState) -> SafeGameInterface {
-        SafeGameInterface {
-            inner: game,
-        }
+        SafeGameInterface { inner: game }
     }
 
     pub fn can_play(&self, cards: Vec<Card>) -> Result<Play, GameError> {
@@ -30,7 +27,6 @@ impl<'a> SafeGameInterface<'a> {
         self.inner.get_play_on_table()
     }
 }
-
 
 #[derive(Debug)]
 pub struct GameState {
@@ -75,17 +71,15 @@ impl GameState {
 
         // make sure the move we are trying to do is legal
         if self.is_first_turn() {
-            if  !play.cards().contains(&THREE_OF_CLUBS) {
+            if !play.cards().contains(&THREE_OF_CLUBS) {
                 // the only requirement on the first move is that they play the three of clubs somehow
                 return Err(GameError::IsntPlayingThreeOfClubs);
             }
-
         } else if self.have_control() {
             // if we have control, we can pretty much do anything except passing
             if play.is_pass() {
                 return Err(GameError::CannotPass);
             }
-
         } else if !play.is_pass() {
             // here, we have our standard conditions, where we are not passing, and we don't have control
 
@@ -130,7 +124,7 @@ impl GameState {
         }
 
         self.turn_index += 1;
-        self.current_player = (self.current_player+1)%self.n_players;
+        self.current_player = (self.current_player + 1) % self.n_players;
     }
 
     pub fn have_control(&self) -> bool {
@@ -185,7 +179,11 @@ fn subtract_cards(cards: &mut Vec<Card>, to_remove: &[Card]) -> Option<()> {
 pub fn deal(cards: &[Card], n_groups: usize) -> Vec<Vec<Card>> {
     // should shuffle these cards before calling this function
 
-    assert_eq!(cards.len() % n_groups, 0, "Cannot deal out the cards evenly");
+    assert_eq!(
+        cards.len() % n_groups,
+        0,
+        "Cannot deal out the cards evenly"
+    );
 
     let cards_per_group = cards.len() / n_groups;
 

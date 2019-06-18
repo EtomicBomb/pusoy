@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use std::fmt;
 use std::str::FromStr;
@@ -6,8 +6,9 @@ use std::str::FromStr;
 use self::Rank::*;
 use self::Suit::*;
 
-
-pub const ALL_RANKS: [Rank; 13] = [Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace, Two];
+pub const ALL_RANKS: [Rank; 13] = [
+    Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace, Two,
+];
 
 pub const ALL_SUITS: [Suit; 4] = [Clubs, Spades, Hearts, Diamonds];
 
@@ -15,7 +16,6 @@ pub const THREE_OF_CLUBS: Card = Card {
     rank: Three,
     suit: Clubs,
 };
-
 
 pub fn entire_deck() -> Vec<Card> {
     let mut cards = Vec::with_capacity(52);
@@ -29,7 +29,6 @@ pub fn entire_deck() -> Vec<Card> {
     cards
 }
 
-
 // note: ord impl compares rank first, then suit
 // this is how cards are ranked in pusoy
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Deserialize, Serialize)]
@@ -41,9 +40,8 @@ pub struct Card {
 impl Card {
     pub fn numeric_value(self) -> usize {
         // value between 0 and 51
-        (4*self.rank as usize) + self.suit as usize
+        (4 * self.rank as usize) + self.suit as usize
     }
-
 }
 
 impl fmt::Display for Card {
@@ -137,7 +135,6 @@ impl FromStr for Rank {
         })
     }
 }
-
 
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Deserialize, Serialize)]
 pub enum Suit {
